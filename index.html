@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div class="bibDisplayUrls">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="bibLinks">
+        <tbody>
+        <tr>
+            <th>
+                Available online:
+            </th>
+        </tr>
+        <tr align="center">
+            <td>
+                <a href="http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=106626&amp;xtid=111683" onclick="window.open(&#39;http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=106626&amp;xtid=111683&#39;); return false;">Click to view via subscription (ASU only)</a>
+                <br>
+            </td>
+        </tr>
+        <tr align="center">
+            <td>
+                <a href="http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=102763&amp;xtid=111683" onclick="window.open(&#39;http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=102763&amp;xtid=111683&#39;); return false;">Click to view via subscription (UNCA only)</a>
+                <br>
+            </td>
+        </tr>
+        <tr align="center">
+            <td>
+                <a href="http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=99341&amp;xtid=111683" onclick="window.open(&#39;http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=99341&amp;xtid=111683&#39;); return false;">Click to view via subscription (WCU only)</a>
+                <br>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="results">
+
+</div>
+</body>
+<script>
+    //objectified params institution names
+    var params = {
+        institutions: [
+            {name: "Appalachian State University",
+                urlPart: 2,
+                linkPart: "ASU"},
+            {name: "University of North Carolina Asheville",
+                urlPart: 3,
+                linkPart: "UNCA"},
+            {name: "Western Carolina University",
+                urlPart: 4,
+                linkPart: "WCU"}
+        ]};
+
+    //gets regex from the url of the site you're visiting
+    function regexReturnUrl(){
+        var currentUrl = window.location.href;
+        currentUrl = "http://wncln.wncln.org/search~S3?/Xphp&searchscope=1&SORT=D/Xphp&searchscope=1&SORT=D&SUBKEY=php/1%2C1160%2C1160%2CB/frameset&FF=Xphp&searchscope=1&SORT=D&1%2C1%2C";
+        var regexString = /~S[0-9]/g;
+        var regexUrl = currentUrl.match(regexString);
+        if (regexUrl != null){
+            return(regexUrl[0].substring(2,regexUrl[0].length));
+        }else {
+            return 0;
+        }
+    }
+
+    //get institution name
+    function determineCurrentInstitution(){
+        var currentInstPosition = -1;
+        var currentInstRegexResult = regexReturnUrl();
+        for(var i = 0; i < params.institutions.length; i++){
+            if(params.institutions[i].urlPart == currentInstRegexResult){
+                currentInstPosition = i;
+            }
+        }
+        if(currentInstPosition != -1){
+            console.log("Current inst: " + params.institutions[currentInstPosition].name);
+        }
+        else{
+            console.log("Current inst cannot be determined!");
+        }
+        return currentInstPosition;
+    }
+
+    function determineInstLinks(instPosition){
+        var currentInstElement = document.createElement("p");
+        currentInstElement.innerHTML = "Not Found!";
+        var otherInstElements = [];
+        var otherInsts =[];
+
+        //build the array of the other institution link parts
+        for(var i = 0; i < params.institutions.length; i++){
+            if(i != instPosition){
+                otherInsts.push(params.institutions[i].linkPart);
+            }
+        }
+
+        //determine which elements need to stay and which ones need to go.
+        for(var m = 0; m < document.getElementsByClassName("bibLinks")[0]
+                .childNodes[1].childNodes.length - 1; m++){
+            if(m%2 != 0){
+                var testedElement = document.getElementsByClassName("bibLinks")[0]
+                    .childNodes[1].childNodes[m];
+                if(testedElement.innerHTML.indexOf(params.institutions[instPosition].linkPart) != -1){
+                    currentInstElement = testedElement;
+                }else{
+                    for(var n = 0; n < otherInsts.length; n++){
+                        if(testedElement.innerHTML.indexOf(otherInsts[n]) != -1){
+                            otherInstElements.push(testedElement);
+                        }
+                    }
+                }
+            }
+        }
+        appendTest(currentInstElement.innerHTML);
+        displayElements(otherInstElements);
+    }
+
+    function displayElements(elements){
+        for(var i = 0; i < elements.length; i++){
+            elements[i].style.display = "none";
+        }
+    }
+
+    go();
+    function go(){
+        var currentInstPosition = determineCurrentInstitution();
+        if(currentInstPosition != -1){
+            determineInstLinks(currentInstPosition);
+        }
+    }
+
+    //get the table- don't know why this is here
+    var selectedRow = document.getElementsByClassName("bibLinks")[0] //entire table
+            .childNodes[1].childNodes[1].innerHTML;
+
+
+    //iterate through all rows of the table that are for our text
+    for(var m = 0; m < document.getElementsByClassName("bibLinks")[0]
+            .childNodes[1].childNodes.length - 1; m++){
+        if(m%2 != 0){
+            appendTest(document.getElementsByClassName("bibLinks")[0]
+                .childNodes[1].childNodes[m].innerHTML);
+        }
+    }
+
+
+
+    //TEST CODE
+
+    function appendTest(text){
+        var testArray = document.getElementById("results");
+        var newNode = document.createElement("div");
+        newNode.innerHTML = text;
+        testArray.appendChild(newNode);
+    }
+
+</script>
+</html>
+<!--
+########################################################################################################################
+DOM CONTAINIG ALL THREE
+########################################################################################################################
+
+<div class="bibDisplayUrls">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="bibLinks">
+        <tbody>
+            <tr>
+                <th>
+                    Available online:
+                </th>
+            </tr>
+            <tr align="center">
+                <td>
+                    <a href="http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=106626&amp;xtid=111683" onclick="window.open(&#39;http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=106626&amp;xtid=111683&#39;); return false;">Click to view via subscription (ASU only)</a>
+                    <br>
+                </td>
+            </tr>
+            <tr align="center">
+                <td>
+                    <a href="http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=102763&amp;xtid=111683" onclick="window.open(&#39;http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=102763&amp;xtid=111683&#39;); return false;">Click to view via subscription (UNCA only)</a>
+                    <br>
+                </td>
+            </tr>
+            <tr align="center">
+                <td>
+                    <a href="http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=99341&amp;xtid=111683" onclick="window.open(&#39;http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=99341&amp;xtid=111683&#39;); return false;">Click to view via subscription (WCU only)</a>
+                    <br>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+########################################################################################################################
+DOM CONTAINING WCU ONLY
+########################################################################################################################
+
+<div class="bibDisplayUrls">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="bibLinks">
+        <tbody>
+            <tr>
+                <th>
+                    Available online:
+                </th>
+            </tr>
+            <tr align="center">
+                <td>
+                    <a href="http://login.proxy195.nclive.org/login?url=http://site.ebrary.com/id/10051611" onclick="window.open('http://login.proxy195.nclive.org/login?url=http://site.ebrary.com/id/10051611'); return false;">click to view (WCU ONLY)</a><br>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+########################################################################################################################
+DOM CONTAINING ASU ONLY
+########################################################################################################################
+
+<div class="bibDisplayUrls">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="bibLinks">
+        <tbody>
+            <tr>
+                <th>
+                    Available online:
+                </th>
+            </tr>
+            <tr align="center">
+                <td >
+                    <a href="http://0-site.ebrary.com.wncln.wncln.org/lib/appstate/docDetail.action?docID=11222243" onclick="window.open('http://0-site.ebrary.com.wncln.wncln.org/lib/appstate/docDetail.action?docID=11222243'); return false;">Connect to this resource online (ASU only)</a>
+                    <br />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+########################################################################################################################
+DOM CONTAINING ASU ONLY WITH ADDITIONAL TEXT! (You bastards)
+########################################################################################################################
+
+<div class="bibDisplayUrls">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="bibLinks">
+        <tbody>
+            <tr>
+                <th>
+                    Available online:
+                </th>
+            </tr>
+            <tr align="center">
+                <td >
+                    <a href="http://0-search.ebscohost.com.wncln.wncln.org/login.aspx?direct=true&scope=site&db=nlebk&db=nlabk&AN=1161564" onclick="window.open('http://0-search.ebscohost.com.wncln.wncln.org/login.aspx?direct=true&scope=site&db=nlebk&db=nlabk&AN=1161564'); return false;">Connect to this resource online (ASU only) (Single-User)</a>
+                    <br />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+########################################################################################################################
+DOM CONTAINING THINGS YOU DON'T TOUCH!
+########################################################################################################################
+
+<div class="bibDisplayUrls">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="bibLinks">
+        <tbody>
+            <tr>
+                <th>
+                    Available online:
+                </th>
+            </tr>
+            <tr align="center">
+                <td >
+                    <a href="http://catdir.loc.gov/catdir/enhancements/fy0716/2002284559-b.html" onclick="window.open('http://catdir.loc.gov/catdir/enhancements/fy0716/2002284559-b.html'); return false;">Contributor biographical information</a><br />
+                </td>
+            </tr>
+            <tr align="center">
+                <td >
+                    <a href="http://catdir.loc.gov/catdir/enhancements/fy0716/2002284559-d.html" onclick="window.open('http://catdir.loc.gov/catdir/enhancements/fy0716/2002284559-d.html'); return false;">Publisher description</a><br />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+########################################################################################################################
+DOM CONTAINING THINGS YOU DON'T TOUCH....AND INSTITUTION LINKS! (WCU) (holy shit, batman)
+########################################################################################################################
+
+<div class="bibDisplayUrls">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="bibLinks">
+        <tbody>
+            <tr>
+                <th>
+                    Available online:
+                </th>
+            </tr>
+            <tr align="center">
+                <td >
+                    <a href="http://catdir.loc.gov/catdir/enhancements/fy0716/2002284559-b.html" onclick="window.open('http://catdir.loc.gov/catdir/enhancements/fy0716/2002284559-b.html'); return false;">Contributor biographical information</a><br />
+                </td>
+            </tr>
+            <tr align="center">
+                <td >
+                    <a href="http://catdir.loc.gov/catdir/enhancements/fy0716/2002284559-d.html" onclick="window.open('http://catdir.loc.gov/catdir/enhancements/fy0716/2002284559-d.html'); return false;">Publisher description</a><br />
+                </td>
+            </tr>
+            <tr align="center">
+                <td >
+                    <a href="http://login.proxy195.nclive.org/login?url=http://site.ebrary.com/id/10051611" onclick="window.open('http://login.proxy195.nclive.org/login?url=http://site.ebrary.com/id/10051611'); return false;">click to view (WCU ONLY)</a>
+                    <br />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+########################################################################################################################
+DOM CONTAINING NOTHING
+########################################################################################################################
+
+<div class="bibDisplayUrls">
+</div>
+
+-->
