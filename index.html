@@ -12,8 +12,6 @@
         <tr align="center">
             <td >
                 <a href="http://0-proquest.safaribooksonline.com.wncln.wncln.org/?uiCode=appstate&xmlId=9781782169291">Connect to full text at Safari Books (ASU only)</a><br />
-
-
             </td>
         </tr>
     </table>
@@ -40,7 +38,6 @@
     //gets regex from the url of the site you're visiting
     function regexReturnUrl(){
         var currentUrl = window.location.href;
-        //testURl
         currentUrl = "http://wncln.wncln.org/search~S3?/Xphp&searchscope=1&SORT=D/Xphp&searchscope=1&SORT=D&SUBKEY=php/1%2C1160%2C1160%2CB/frameset&FF=Xphp&searchscope=1&SORT=D&1%2C1%2C";
         var regexString = /~S[0-9]/g;
         var regexUrl = currentUrl.match(regexString);
@@ -83,13 +80,11 @@
         }
 
         //determine which elements need to stay and which ones need to go.
-
         for(var m = 0; m < document.getElementsByClassName("bibLinks")[0]
                 .childNodes[1].childNodes.length - 1; m++){
             if(document.getElementsByClassName("bibLinks")[0].childNodes[1].childNodes[m].innerHTML != undefined){
                 var testedElement = document.getElementsByClassName("bibLinks")[0]
                         .childNodes[1].childNodes[m];
-                //alert(testedElement.innerHTML);
                 if(testedElement.innerHTML.indexOf(params.institutions[instPosition].linkPart) != -1){
                     currentInstElement = testedElement;
                 }else{
@@ -101,7 +96,6 @@
                 }
             }
         }
-        //appendTest(currentInstElement.innerHTML);
         displayElements(otherInstElements);
     }
 
@@ -121,32 +115,6 @@
             determineInstLinks(currentInstPosition);
         }
     }
-
-    //get the table- don't know why this is here
-    var selectedRow = document.getElementsByClassName("bibLinks")[0] //entire table
-            .childNodes[1].childNodes[1].innerHTML;
-
-
-    //iterate through all rows of the table that are for our text
-    for(var m = 0; m < document.getElementsByClassName("bibLinks")[0]
-            .childNodes[1].childNodes.length - 1; m++){
-        if(m%2 != 0){
-            //appendTest(document.getElementsByClassName("bibLinks")[0]
-                  //  .childNodes[1].childNodes[m].innerHTML);
-        }
-    }
-
-
-
-    //TEST CODE
-    /*
-    function appendTest(text){
-        var testArray = document.getElementById("results");
-        var newNode = document.createElement("div");
-        newNode.innerHTML = text;
-        testArray.appendChild(newNode);
-    }
-    */
 </script>
 </html>
 <!--
