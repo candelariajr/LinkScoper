@@ -7,33 +7,16 @@
 <body>
 <div class="bibDisplayUrls">
     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="bibLinks">
-        <tbody>
-        <tr>
-            <th>
-                Available online:
-            </th>
-        </tr>
+        <tr><th>
+            Available online:</th></tr>
         <tr align="center">
-            <td>
-                <a href="http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=106626&amp;xtid=111683" onclick="window.open(&#39;http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=106626&amp;xtid=111683&#39;); return false;">Click to view via subscription (ASU only)</a>
-                <br>
+            <td >
+                <a href="http://0-proquest.safaribooksonline.com.wncln.wncln.org/?uiCode=appstate&xmlId=9781782169291">Connect to full text at Safari Books (ASU only)</a><br />
+
+
             </td>
         </tr>
-        <tr align="center">
-            <td>
-                <a href="http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=102763&amp;xtid=111683" onclick="window.open(&#39;http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=102763&amp;xtid=111683&#39;); return false;">Click to view via subscription (UNCA only)</a>
-                <br>
-            </td>
-        </tr>
-        <tr align="center">
-            <td>
-                <a href="http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=99341&amp;xtid=111683" onclick="window.open(&#39;http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=99341&amp;xtid=111683&#39;); return false;">Click to view via subscription (WCU only)</a>
-                <br>
-            </td>
-        </tr>
-        </tbody>
     </table>
-</div>
 
 <div id="results">
 
@@ -57,6 +40,7 @@
     //gets regex from the url of the site you're visiting
     function regexReturnUrl(){
         var currentUrl = window.location.href;
+        //testURl
         currentUrl = "http://wncln.wncln.org/search~S3?/Xphp&searchscope=1&SORT=D/Xphp&searchscope=1&SORT=D&SUBKEY=php/1%2C1160%2C1160%2CB/frameset&FF=Xphp&searchscope=1&SORT=D&1%2C1%2C";
         var regexString = /~S[0-9]/g;
         var regexUrl = currentUrl.match(regexString);
@@ -99,11 +83,13 @@
         }
 
         //determine which elements need to stay and which ones need to go.
+
         for(var m = 0; m < document.getElementsByClassName("bibLinks")[0]
                 .childNodes[1].childNodes.length - 1; m++){
-            if(m%2 != 0){
+            if(document.getElementsByClassName("bibLinks")[0].childNodes[1].childNodes[m].innerHTML != undefined){
                 var testedElement = document.getElementsByClassName("bibLinks")[0]
-                    .childNodes[1].childNodes[m];
+                        .childNodes[1].childNodes[m];
+                //alert(testedElement.innerHTML);
                 if(testedElement.innerHTML.indexOf(params.institutions[instPosition].linkPart) != -1){
                     currentInstElement = testedElement;
                 }else{
@@ -115,11 +101,14 @@
                 }
             }
         }
-        appendTest(currentInstElement.innerHTML);
+        //appendTest(currentInstElement.innerHTML);
         displayElements(otherInstElements);
     }
 
     function displayElements(elements){
+        if((elements.length * 2) == document.getElementsByClassName("bibLinks")[0].childNodes[1].childNodes.length - 2){
+            document.getElementsByClassName("bibLinks")[0].childNodes[1].childNodes[0].style.display = "none";
+        }
         for(var i = 0; i < elements.length; i++){
             elements[i].style.display = "none";
         }
@@ -142,22 +131,22 @@
     for(var m = 0; m < document.getElementsByClassName("bibLinks")[0]
             .childNodes[1].childNodes.length - 1; m++){
         if(m%2 != 0){
-            appendTest(document.getElementsByClassName("bibLinks")[0]
-                .childNodes[1].childNodes[m].innerHTML);
+            //appendTest(document.getElementsByClassName("bibLinks")[0]
+                  //  .childNodes[1].childNodes[m].innerHTML);
         }
     }
 
 
 
     //TEST CODE
-
+    /*
     function appendTest(text){
         var testArray = document.getElementById("results");
         var newNode = document.createElement("div");
         newNode.innerHTML = text;
         testArray.appendChild(newNode);
     }
-
+    */
 </script>
 </html>
 <!--
