@@ -110,7 +110,6 @@
         }
         appendTest(currentInstElement.innerHTML);
         displayElements(otherInstElements);
-        removeImage();
     }
 
     function removeImage(){
@@ -146,6 +145,7 @@
         if(currentInstPosition != -1){
             determineInstLinks(currentInstPosition);
         }
+        removeImage();
     }
 
     //get the table- don't know why this is here
