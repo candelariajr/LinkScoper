@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <script
+            src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+            crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="bibDisplayUrls">
@@ -15,19 +19,7 @@
         </tr>
         <tr align="center">
             <td>
-                <a href="http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=106626&amp;xtid=111683" onclick="window.open(&#39;http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=106626&amp;xtid=111683&#39;); return false;">Click to view via subscription (ASU only)</a>
-                <br>
-            </td>
-        </tr>
-        <tr align="center">
-            <td>
-                <a href="http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=102763&amp;xtid=111683" onclick="window.open(&#39;http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=102763&amp;xtid=111683&#39;); return false;">Click to view via subscription (UNCA only)</a>
-                <br>
-            </td>
-        </tr>
-        <tr align="center">
-            <td>
-                <a href="http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=99341&amp;xtid=111683" onclick="window.open(&#39;http://0-fod.infobase.com.wncln.wncln.org/PortalPlaylists.aspx?wID=99341&amp;xtid=111683&#39;); return false;">Click to view via subscription (WCU only)</a>
+                <a href="http://catalogimages.wiley.com/images/db/jimages/9781118701423.jpg">Cover image</a>
                 <br>
             </td>
         </tr>
@@ -109,6 +101,7 @@
                 }else{
                     for(var n = 0; n < otherInsts.length; n++){
                         if(testedElement.innerHTML.indexOf(otherInsts[n]) != -1){
+                            //    || testedElement.innerText.replace(/(\r\n|\n|\r)/gm,"").toUpperCase() == "COVER IMAGE "){
                             otherInstElements.push(testedElement);
                         }
                     }
@@ -117,6 +110,28 @@
         }
         appendTest(currentInstElement.innerHTML);
         displayElements(otherInstElements);
+        removeImage();
+    }
+
+    function removeImage(){
+        /*for(var i =0; i < document.getElementsByClassName("bibLinks")[0].childNodes[1].childNodes.length -1; i++){
+            var testNode = document.getElementsByClassName("bibLinks")[0].childNodes[1].childNodes[i];
+            if (testNode.innerText != undefined && testNode.innerText.replace(/(\r\n| \n|\r|\u21b5)/gm,'').toUpperCase() == "COVER IMAGE"){
+                testNode.style.display = "none";
+                document.getElementsByClassName("bibLinks")[0].childNodes[1].removeChild(document.getElementsByClassName("bibLinks")[0].childNodes[1].childNodes[i]);
+                //TODO: add detection of indexOf(string.toUpperCase("COVER)) != -1 into detection method. Can also say things like "Cover art", etc
+            }
+        }*/
+
+            $(".bibDisplayUrls a").each(function(){
+                if(this.text.toUpperCase().indexOf("COVER") != -1){
+                    $(this).css("display","none");
+                }
+            });
+            if($(".bibDisplayUrls > table > tbody > *").length == 2) {
+                $(".bibDisplayUrls").hide();
+            }
+
     }
 
     function displayElements(elements){
@@ -325,4 +340,25 @@ DOM CONTAINING NOTHING
 <div class="bibDisplayUrls">
 </div>
 
+########################################################################################################################
+DOM CONTAINING COVER IMAGE LINK
+########################################################################################################################
+
+<div class="bibDisplayUrls">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="bibLinks">
+        <tbody>
+            <tr>
+                <th>
+                    Available online:
+                </th>
+            </tr>
+            <tr align="center">
+                <td>
+                    <a href="http://catalogimages.wiley.com/images/db/jimages/9781118701423.jpg">Cover image</a>
+                    <br>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 -->
