@@ -19,7 +19,7 @@
         </tr>
         <tr align="center">
             <td>
-                <a href="http://catalogimages.wiley.com/images/db/jimages/9781118701423.jpg">Cover image</a>
+                <a href="http://catalogimages.wiley.com/images/db/jimages/9781118701423.jpg">Cover</a>
                 <br>
             </td>
         </tr>
@@ -113,24 +113,21 @@
     }
 
     function removeImage(){
-        /*for(var i =0; i < document.getElementsByClassName("bibLinks")[0].childNodes[1].childNodes.length -1; i++){
-            var testNode = document.getElementsByClassName("bibLinks")[0].childNodes[1].childNodes[i];
-            if (testNode.innerText != undefined && testNode.innerText.replace(/(\r\n| \n|\r|\u21b5)/gm,'').toUpperCase() == "COVER IMAGE"){
-                testNode.style.display = "none";
-                document.getElementsByClassName("bibLinks")[0].childNodes[1].removeChild(document.getElementsByClassName("bibLinks")[0].childNodes[1].childNodes[i]);
-                //TODO: add detection of indexOf(string.toUpperCase("COVER)) != -1 into detection method. Can also say things like "Cover art", etc
-            }
-        }*/
-
-            $(".bibDisplayUrls a").each(function(){
-                if(this.text.toUpperCase().indexOf("COVER") != -1){
-                    $(this).css("display","none");
+        /*
+        * Removed JQuery. Was causing trouble on some of the slower loading pages.
+        */
+        var bibDisplayElements = document.getElementsByClassName("bibDisplayUrls");
+        var displayLinks = bibDisplayElements[0].getElementsByTagName("a");
+        for(var i = 0; i < displayLinks.length; i++){
+            if(displayLinks[i].text.toUpperCase().indexOf("COVER") != -1 &&
+                    ["jpg", ".png", ".gif", ".tif", ".tif"].indexOf(displayLinks[i].getAttribute("href")
+                            .substr(displayLinks[i].getAttribute("href").length - 3)) != -1){
+                displayLinks[i].style.display = "none";
+                if(bibDisplayElements[0].getElementsByTagName("tr").length == 2){
+                    bibDisplayElements[0].style.display = "none";
                 }
-            });
-            if($(".bibDisplayUrls > table > tbody > *").length == 2) {
-                $(".bibDisplayUrls").hide();
             }
-
+        }
     }
 
     function displayElements(elements){
